@@ -1,0 +1,27 @@
+{
+  "name": "product-catalog-api",
+  "version": "1.0.0",
+  "description": "Intermediate Backend Project - CRUD for products, categories, filtering and search.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nl-codes/Product-Catalog-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nl-codes/Product-Catalog-API/issues"
+  },
+  "homepage": "https://github.com/nl-codes/Product-Catalog-API#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.0",
+    "nodemon": "^3.1.10"
+  }
+}
