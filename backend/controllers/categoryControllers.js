@@ -2,6 +2,7 @@
 import {
     changeCategoryById,
     createCategory,
+    findCategoryById,
     listAllCategory,
     removeCategoryById,
 } from "../services/categoryService.js";
@@ -23,6 +24,16 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
+export const getCategoryById = async (req, res) => {
+    try {
+        const searchedCategory = await findCategoryById(req.params);
+        return res.status(200).json(searchedCategory);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Category id is required" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
 /**
  * @function addCategory
  * @description Controller to add a new category to the database.
