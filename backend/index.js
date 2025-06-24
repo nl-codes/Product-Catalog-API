@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./database/connection.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -14,3 +15,4 @@ app.listen(PORT, () => {
 connectDB();
 
 app.use("/api/category", categoryRoutes);
+app.use("/api/product", productRoutes);
