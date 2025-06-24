@@ -61,3 +61,23 @@ export const changeCategoryById = async (
 
     return await Category.findOneAndUpdate(filter, update, { new: true });
 };
+
+export const removeCategoryById = async ({ id: existing_id }) => {
+    if (!existing_id) {
+        throw new Error("Category id is required");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(existing_id)) {
+        throw new Error("Category id is invalid");
+    }
+
+    const exisitingCategory = await Category.findOne({
+        _id: existing_id,
+    });
+
+    if (!exisitingCategory) {
+        throw new Error("Category doesn't exist");
+    }
+
+    return await Category.findOneAndDelete({ _id: existing_id });
+};

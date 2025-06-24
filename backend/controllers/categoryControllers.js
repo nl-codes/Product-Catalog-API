@@ -2,6 +2,7 @@ import {
     changeCategoryById,
     createCategory,
     listAllCategory,
+    removeCategoryById,
 } from "../services/categoryService.js";
 
 export const getAllCategories = async (req, res) => {
@@ -25,10 +26,23 @@ export const addCategory = async (req, res) => {
     }
 };
 
-export const updateCategory = async (req, res) => {
+export const updateCategoryById = async (req, res) => {
     try {
         const editedCategory = await changeCategoryById(req.params, req.body);
         res.status(200).json(editedCategory);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Category doesn't exist" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
+
+export const deleteCategoryById = async (req, res) => {
+    try {
+        await removeCategoryById(req.params);
+        return res.status(200).json({
+            message: `Category of id ${req.params.id} has been deleted.`,
+        });
     } catch (err) {
         console.error("❌ Error:", err.message);
         const status = err.message === "Category doesn't exist" ? 404 : 400;
