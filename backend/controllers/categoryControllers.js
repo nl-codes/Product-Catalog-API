@@ -1,3 +1,4 @@
+// Import service-level functions for handling category data operations
 import {
     changeCategoryById,
     createCategory,
@@ -5,6 +6,13 @@ import {
     removeCategoryById,
 } from "../services/categoryService.js";
 
+/**
+ * @function getAllCategories
+ * @description Controller to retrieve all categories from the database.
+ *              Responds with a list of all available categories in JSON format.
+ *              Calls the service layer's `listAllCategory` function.
+ * @route GET /api/categories
+ */
 export const getAllCategories = async (req, res) => {
     try {
         const categories = await listAllCategory();
@@ -15,6 +23,13 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
+/**
+ * @function addCategory
+ * @description Controller to add a new category to the database.
+ *              Accepts category data from the request body and delegates creation to `createCategory`.
+ *              Handles duplicate category errors and responds accordingly.
+ * @route POST /api/categories
+ */
 export const addCategory = async (req, res) => {
     try {
         const savedCategory = await createCategory(req.body);
@@ -26,6 +41,14 @@ export const addCategory = async (req, res) => {
     }
 };
 
+/**
+ * @function updateCategoryById
+ * @description Controller to update an existing category by its ID.
+ *              Expects `id` in the request parameters and updated data in the request body.
+ *              Delegates the update operation to `changeCategoryById`.
+ *              Returns the updated category or an appropriate error if not found.
+ * @route PUT /api/categories/:id
+ */
 export const updateCategoryById = async (req, res) => {
     try {
         const editedCategory = await changeCategoryById(req.params, req.body);
@@ -37,6 +60,13 @@ export const updateCategoryById = async (req, res) => {
     }
 };
 
+/**
+ * @function deleteCategoryById
+ * @description Controller to delete a category by its ID.
+ *              Expects `id` in the request parameters and delegates deletion to `removeCategoryById`.
+ *              Responds with a success message or an error if the category doesn't exist.
+ * @route DELETE /api/categories/:id
+ */
 export const deleteCategoryById = async (req, res) => {
     try {
         await removeCategoryById(req.params);
