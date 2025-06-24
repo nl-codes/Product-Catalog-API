@@ -2,6 +2,7 @@
 import {
     changeCategoryById,
     createCategory,
+    findCategoryById,
     listAllCategory,
     removeCategoryById,
 } from "../services/categoryService.js";
@@ -23,6 +24,26 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
+/**
+ * @function getCategoryById
+ * @description Controller to retrieve categories from the database based on given category id.
+ *              Responds with a details of the category found in JSON format.
+ *              Calls the service layer's `findCategoryById` function.
+ * @route GET /api/categories/:id
+ */
+export const getCategoryById = async (req, res) => {
+    try {
+        const searchedCategory = await findCategoryById(req.params);
+        if (!searchedCategory) {
+            return res.status(404).json({ error: "Category id not found" });
+        }
+        return res.status(200).json(searchedCategory);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Category id is required" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
 /**
  * @function addCategory
  * @description Controller to add a new category to the database.
