@@ -2,6 +2,30 @@ import mongoose from "mongoose";
 import { Product } from "../models/models.js";
 import { findCategoryById } from "./categoryService.js";
 
+/**
+ * @function createProduct
+ * @description
+ * Service function to validate and create a new product entry in the database.
+ * Performs input validation, checks for name uniqueness, validates referenced category,
+ * and ensures proper numeric types before saving the product document.
+ *
+ * @param {Object} productData - The input data required to create a product.
+ * @param {string} productData.name - The name of the product (required, non-empty).
+ * @param {string} [productData.description=""] - Optional description of the product.
+ * @param {number} productData.price - The price of the product (required, must be numeric).
+ * @param {number} [productData.stock=0] - Quantity in stock (defaults to 0, must be numeric).
+ * @param {string} productData.category - The `_id` of the associated category (required, must be valid and exist).
+ *
+ * @throws {Error} If:
+ * - `name` is missing or empty
+ * - `name` already exists (case-insensitive match)
+ * - `price` is missing or not a number
+ * - `stock` is not a number
+ * - `category` is missing, invalid, or does not exist in the database
+ *
+ * @returns {Promise<Object>} The saved product document with populated fields.
+ *
+ */
 export const createProduct = async ({
     name,
     description = "",

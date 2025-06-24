@@ -2,6 +2,21 @@
 
 import { createProduct } from "../services/productService.js";
 
+/**
+ * @function addProduct
+ * @description
+ * Express controller to handle the creation of a new product.
+ * It receives product data from the request body, passes it to the `createProduct` service,
+ * and returns the created product or an appropriate error response.
+ *
+ * - If the product is created successfully: responds with HTTP `201 Created`.
+ * - If the product already exists: responds with HTTP `409 Conflict`.
+ * - If the category ID is invalid or does not exist: responds with HTTP `404 Not Found`.
+ * - For all other validation failures: responds with HTTP `400 Bad Request`.
+ *
+ * @route POST /api/products
+ *
+ */
 export const addProduct = async (req, res) => {
     try {
         const savedProduct = await createProduct(req.body);
