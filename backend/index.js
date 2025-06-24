@@ -1,6 +1,6 @@
 import express from "express";
-import mongoose from "mongoose";
-import { Category, Product } from "./models.js";
+import connectDB from "./database/connection.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -11,4 +11,6 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
 
-const mongodb = mongoose.connect("mongodb://localhost:27017/product_catalog");
+connectDB();
+
+app.use("/api/category", categoryRoutes);
