@@ -72,3 +72,13 @@ export const createProduct = async ({
     });
     return await product.save();
 };
+
+/**
+ * @function listAllProducts
+ * @description Service function to retrieve all product documents from the database.
+ *
+ * @returns {Promise<Array>} Array of product documents.
+ */
+export const listAllProducts = async () => {
+    return Product.find();
+};

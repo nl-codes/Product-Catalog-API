@@ -1,6 +1,5 @@
 // Import service-level functions for handling category data operations
-
-import { createProduct } from "../services/productService.js";
+import { createProduct, listAllProducts } from "../services/productService.js";
 
 /**
  * @function addProduct
@@ -33,5 +32,22 @@ export const addProduct = async (req, res) => {
             status = 404;
 
         return res.status(status).json({ error: err.message });
+    }
+};
+
+/**
+ * @function getAllProducts
+ * @description Controller to retrieve all products from the database.
+ *              Responds with a list of all available products in JSON format.
+ *              Calls the service layer's `listAllProducts` function.
+ * @route GET /api/products
+ */
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await listAllProducts();
+        res.status(200).json(products);
+    } catch (err) {
+        console.error("❌ Error fetching products: ", err);
+        res.status(500).json({ error: "Error fetching products" });
     }
 };
