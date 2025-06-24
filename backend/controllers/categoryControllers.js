@@ -24,6 +24,13 @@ export const getAllCategories = async (req, res) => {
     }
 };
 
+/**
+ * @function getCategoryById
+ * @description Controller to retrieve categories from the database based on given category id.
+ *              Responds with a details of the category found in JSON format.
+ *              Calls the service layer's `findCategoryById` function.
+ * @route GET /api/categories/:id
+ */
 export const getCategoryById = async (req, res) => {
     try {
         const searchedCategory = await findCategoryById(req.params);
