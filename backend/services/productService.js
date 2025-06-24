@@ -82,3 +82,19 @@ export const createProduct = async ({
 export const listAllProducts = async () => {
     return Product.find();
 };
+
+export const findProductById = async ({ id }) => {
+    if (!id) {
+        throw new Error("Product id is required");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product id is invalid");
+    }
+
+    const exisitingProduct = await Product.findOne({
+        _id: id,
+    });
+
+    return exisitingProduct;
+};
