@@ -44,6 +44,21 @@ export const listAllCategory = async () => {
     return Category.find();
 };
 
+/**
+ * @function findCategoryById
+ * @description
+ * Service function to retrieve a single category document by its ObjectId.
+ * Performs validation on the provided ID before querying the database.
+ * Returns the category document if found, or `null` if not found.
+ *
+ * @param {Object} param - Object containing the category ID.
+ * @param {string} param.id - The `_id` of the category to be retrieved.
+ *
+ * @throws {Error} If the `id` is missing or not a valid MongoDB ObjectId.
+ *
+ * @returns {Promise<Object|null>} The category document if found, or `null` if it doesn't exist.
+ *
+ */
 export const findCategoryById = async ({ id: existing_id }) => {
     if (!existing_id) {
         throw new Error("Category id is required");
