@@ -82,3 +82,34 @@ export const createProduct = async ({
 export const listAllProducts = async () => {
     return Product.find();
 };
+
+/**
+ * @function findProductById
+ * @description
+ * Service function to retrieve a single product document by its ObjectId.
+ * Performs validation on the provided ID before querying the database.
+ * Returns the product document if found, or `null` if not found.
+ *
+ * @param {Object} param - Object containing the product ID.
+ * @param {string} param.id - The `_id` of the product to be retrieved.
+ *
+ * @throws {Error} If the `id` is missing or not a valid MongoDB ObjectId.
+ *
+ * @returns {Promise<Object|null>} The product document if found, or `null` if it doesn't exist.
+ *
+ */
+export const findProductById = async ({ id }) => {
+    if (!id) {
+        throw new Error("Product id is required");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product id is invalid");
+    }
+
+    const exisitingProduct = await Product.findOne({
+        _id: id,
+    });
+
+    return exisitingProduct;
+};
