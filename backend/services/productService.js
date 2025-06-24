@@ -72,3 +72,7 @@ export const createProduct = async ({
     });
     return await product.save();
 };
+
+export const listAllProducts = async () => {
+    return Product.find();
+};
