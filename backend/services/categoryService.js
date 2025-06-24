@@ -44,6 +44,26 @@ export const listAllCategory = async () => {
     return Category.find();
 };
 
+export const findCategoryById = async ({ id: existing_id }) => {
+    if (!existing_id) {
+        throw new Error("Category id is required");
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(existing_id)) {
+        throw new Error("Category id is invalid");
+    }
+
+    const exisitingCategory = await Category.findOne({
+        _id: existing_id,
+    });
+
+    if (!exisitingCategory) {
+        throw new Error("Category id doesn't exist");
+    }
+
+    return exisitingCategory;
+};
+
 /**
  * @function changeCategoryById
  * @description Service function to update an existing category using its ID.
