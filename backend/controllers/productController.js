@@ -35,6 +35,13 @@ export const addProduct = async (req, res) => {
     }
 };
 
+/**
+ * @function getAllProducts
+ * @description Controller to retrieve all products from the database.
+ *              Responds with a list of all available products in JSON format.
+ *              Calls the service layer's `listAllProducts` function.
+ * @route GET /api/products
+ */
 export const getAllProducts = async (req, res) => {
     try {
         const products = await listAllProducts();
