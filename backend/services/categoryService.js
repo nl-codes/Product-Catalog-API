@@ -19,3 +19,7 @@ export const createCategory = async ({ name, description = "" }) => {
 
     return await category.save();
 };
+
+export const listAllCategory = async () => {
+    return Category.find();
+};

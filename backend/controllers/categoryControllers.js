@@ -1,12 +1,15 @@
 import { Category } from "../models/models.js";
-import { createCategory } from "../services/categoryService.js";
+import {
+    createCategory,
+    listAllCategory,
+} from "../services/categoryService.js";
 
 export const getAllCategories = async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await listAllCategory();
         res.status(200).json(categories);
     } catch (err) {
-        console.error("Error fetching categories: ", err);
+        console.error("❌ Error fetching categories: ", err);
         res.status(500).json({ error: "Error fetching categories" });
     }
 };
