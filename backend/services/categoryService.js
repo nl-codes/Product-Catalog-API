@@ -57,10 +57,6 @@ export const findCategoryById = async ({ id: existing_id }) => {
         _id: existing_id,
     });
 
-    if (!exisitingCategory) {
-        throw new Error("Category id doesn't exist");
-    }
-
     return exisitingCategory;
 };
 

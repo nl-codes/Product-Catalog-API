@@ -27,6 +27,9 @@ export const getAllCategories = async (req, res) => {
 export const getCategoryById = async (req, res) => {
     try {
         const searchedCategory = await findCategoryById(req.params);
+        if (!searchedCategory) {
+            return res.status(404).json({ error: "Category id not found" });
+        }
         return res.status(200).json(searchedCategory);
     } catch (err) {
         console.error("❌ Error:", err.message);
