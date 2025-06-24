@@ -7,14 +7,14 @@ export const createCategory = async ({ name, description = "" }) => {
     }
 
     const exisiting = await Category.findOne({
-        name: new RegExp(`^${name.trim()}$`, "i"),
+        name: new RegExp(`^${name.trim().toLowerCase()}$`, "i"),
     });
     if (exisiting) {
         throw new Error("Category already exists");
     }
 
     const category = new Category({
-        name: name.trim(),
+        name: name.trim().toLowerCase(),
         description: description.trim(),
     });
 
