@@ -56,6 +56,13 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
+/**
+ * @function getProductById
+ * @description Controller to retrieve product from the database based on given product id.
+ *              Responds with a details of the product found in JSON format.
+ *              Calls the service layer's `findProductById` function.
+ * @route GET /api/products/:id
+ */
 export const getProductById = async (req, res) => {
     try {
         const searchedProduct = await findProductById(req.params);
