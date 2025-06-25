@@ -233,3 +233,21 @@ export const removeProductById = async ({ id }) => {
 
     return await Product.findOneAndDelete({ _id: id });
 };
+
+export const selectProductByCategoryId = async ({ id }) => {
+    if (!id) {
+        throw new Error("Category Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Category Id is invalid");
+    }
+
+    const categoryExists = await findCategoryById({ id });
+    if (!categoryExists) {
+        throw new Error("Category Id doesn't exist");
+    }
+
+    return await Product.find({ category: { _id: id } }).populate(
+        "category",
+        "_id name description"
+    );
+};
