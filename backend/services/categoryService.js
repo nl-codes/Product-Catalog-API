@@ -75,6 +75,20 @@ export const findCategoryById = async ({ id: existing_id }) => {
     return exisitingCategory;
 };
 
+/**
+ * @function findCategoryByName
+ * @description
+ * Service function to retrieve a single category document by its Name.
+ * Returns the category document if found, or `null` if not found.
+ *
+ * @param {Object} param - Object containing the category Name.
+ * @param {string} param.name - The `name` of the category to be retrieved.
+ *
+ * @throws {Error} If the `name` is missing.
+ *
+ * @returns {Promise<Object|null>} The category document if found, or `null` if it doesn't exist.
+ *
+ */
 export const findCategoryByName = async ({ name }) => {
     if (!name || name.trim() === "") {
         throw new Error("Category Name is required");

@@ -45,7 +45,13 @@ export const getCategoryById = async (req, res) => {
         return res.status(status).json({ error: err.message });
     }
 };
-
+/**
+ * @function getCategoryByName
+ * @description Controller to retrieve categories from the database based on given category name.
+ *              Responds with a details of the category found in JSON format.
+ *              Calls the service layer's `findCategoryByName` function.
+ * @route GET /api/category/name/:name
+ */
 export const getCategoryByName = async (req, res) => {
     try {
         const searchedCategory = await findCategoryByName(req.params);
