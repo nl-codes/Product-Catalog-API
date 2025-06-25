@@ -80,7 +80,7 @@ export const createProduct = async ({
  * @returns {Promise<Array>} Array of product documents.
  */
 export const listAllProducts = async () => {
-    return Product.find();
+    return Product.find().populate("category", "_id name description");
 };
 
 /**
@@ -109,7 +109,7 @@ export const findProductById = async ({ id }) => {
 
     const exisitingProduct = await Product.findOne({
         _id: id,
-    });
+    }).populate("category", "_id name description");
 
     return exisitingProduct;
 };
