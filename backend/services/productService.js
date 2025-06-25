@@ -208,6 +208,17 @@ export const changeProductById = async (
     return await Product.findOneAndUpdate({ _id: id }, update, { new: true });
 };
 
+/**
+ * @function removeProductById
+ * @description Service function to delete a product by its ID.
+ *              Validates ID and ensures the product exists before deletion.
+ *
+ * @param {Object} param0 - Request parameter object.
+ * @param {string} param0.id - The ID of the product to be deleted.
+ *
+ * @throws {Error} If the ID is missing, invalid, or the product doesn't exist.
+ * @returns {Promise<Object>} The deleted product document.
+ */
 export const removeProductById = async ({ id }) => {
     if (!id) {
         throw new Error("Product Id is missing");

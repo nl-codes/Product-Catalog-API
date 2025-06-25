@@ -122,6 +122,13 @@ export const updateProductById = async (req, res) => {
     }
 };
 
+/**
+ * @function deleteProductById
+ * @description Controller to delete a product by its ID.
+ *              Expects `id` in the request parameters and delegates deletion to `removeProductById`.
+ *              Responds with a success message or an error if the product doesn't exist.
+ * @route DELETE /api/product/:id
+ */
 export const deleteProductById = async (req, res) => {
     try {
         await removeProductById(req.params);
