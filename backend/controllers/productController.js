@@ -144,13 +144,20 @@ export const deleteProductById = async (req, res) => {
     }
 };
 
+/**
+ * @function filterProductByCategoryId
+ * @description Controller to filter products using the category Id.
+ *              Expects `id` in the request parameters and delegates filtration to `filterProductByCategoryId`.
+ *              Responds with a success message or an error if the product doesn't exist.
+ * @route GET /api/product/filter-by/category/id/:id
+ */
 export const filterProductByCategoryId = async (req, res) => {
     try {
         const filteredProducts = await selectProductByCategoryId(req.params);
         return res.status(200).json(filteredProducts);
     } catch (err) {
         console.error("❌ Error:", err.message);
-        const status = err.message === "Category Id doesn't exist" ? 404 : 400;
+        const status = err.message === "Category doesn't exist" ? 404 : 400;
         return res.status(status).json({ error: err.message });
     }
 };

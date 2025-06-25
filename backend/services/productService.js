@@ -234,6 +234,20 @@ export const removeProductById = async ({ id }) => {
     return await Product.findOneAndDelete({ _id: id });
 };
 
+/**
+ * Retrieves all products that belong to a given category by its ID.
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.id - The ObjectId of the category.
+ *
+ * @throws Will throw an error if:
+ * - The category ID is missing.
+ * - The category ID is invalid.
+ * - No category exists with the given ID.
+ *
+ * @returns {Promise<Array>} A list of products with the given category ID,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
 export const selectProductByCategoryId = async ({ id }) => {
     if (!id) {
         throw new Error("Category Id is missing");
