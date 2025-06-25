@@ -235,7 +235,9 @@ export const removeProductById = async ({ id }) => {
 };
 
 /**
- * Retrieves all products that belong to a given category by its ID.
+ * @function selectProductByCategoryId
+ * @description Service function retrieve all products that belong
+ *              to a given category by its category Id
  *
  * @param {Object} params - The parameter object.
  * @param {string} params.id - The ObjectId of the category.
@@ -266,6 +268,22 @@ export const selectProductByCategoryId = async ({ id }) => {
     );
 };
 
+/**
+ * @function selectProductByCategoryName
+ * @description Service function retrieve all products that belong
+ *              to a given category by its category name
+ *
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.name - The name of the category (case-insensitive).
+ *
+ * @throws Will throw an error if:
+ * - The category name is missing or empty.
+ * - No category exists with the given name.
+ *
+ * @returns {Promise<Array>} A filtered list of products whose category name matches the given name,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
 export const selectProductByCategoryName = async ({ name }) => {
     if (!name || name.trim() === "") {
         throw new Error("Category Name is missing");
