@@ -75,6 +75,18 @@ export const findCategoryById = async ({ id: existing_id }) => {
     return exisitingCategory;
 };
 
+export const findCategoryByName = async ({ name }) => {
+    if (!name || name.trim() === "") {
+        throw new Error("Category Name is required");
+    }
+
+    const exisitingCategory = await Category.findOne({
+        name: name.trim().toLowerCase(),
+    });
+
+    return exisitingCategory;
+};
+
 /**
  * @function changeCategoryById
  * @description Service function to update an existing category using its ID.
