@@ -78,6 +78,16 @@ export const getProductById = async (req, res) => {
     }
 };
 
+/**
+ * @function updateProductById
+ * @description Controller to update an existing product by its ID.
+ *              Expects `id` in the request parameters and updated data in the request body.
+ *              Delegates the update operation to `changeProductById`.
+ *              Returns the updated product or an appropriate error if not found.
+ *
+ * @route PUT /api/products/:id
+ *
+ */
 export const updateProductById = async (req, res) => {
     try {
         const editedProduct = await changeProductById(req.params, req.body);
