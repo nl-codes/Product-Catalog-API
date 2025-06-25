@@ -113,3 +113,123 @@ export const findProductById = async ({ id }) => {
 
     return exisitingProduct;
 };
+
+/**
+ * @function changeProductById
+ * @description
+ * Service function to update an existing product's details in the database.
+ * Validates input fields including ID format, name uniqueness, value types, and category existence
+ * before performing the update operation.
+ *
+ * @param {Object} params - Parameters from the route.
+ * @param {string} params.id - The `_id` of the product to be updated.
+ * @param {Object} updates - Updated product data.
+ * @param {string} updates.name - New name of the product (required, unique, non-empty).
+ * @param {string} updates.description - New description of the product (required).
+ * @param {number} updates.price - Updated price (required, numeric, >= 0).
+ * @param {number} updates.stock - Updated stock quantity (required, integer, >= 0).
+ * @param {string} updates.category - Updated category `_id` (required, must be valid and exist).
+ *
+ * @throws {Error} If:
+ * - `id` is missing or invalid
+ * - Product with the given `id` does not exist
+ * - `name` is missing, empty, or already taken by another product
+ * - `description` is missing
+ * - `price` is missing, invalid, or negative
+ * - `stock` is missing, invalid, non-integer, or negative
+ * - `category` is missing, invalid, or does not exist
+ *
+ * @returns {Promise<Object>} The updated product document with the new values.
+ *
+ */
+export const changeProductById = async (
+    { id },
+    { name, description, price, stock, category }
+) => {
+    if (!id) {
+        throw new Error("Product Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product Id is invalid");
+    }
+
+    const existingProduct = await findProductById({ id });
+    if (!existingProduct) {
+        throw new Error("Product Id doesn't exist");
+    }
+
+    if (!name || name.trim() === "") {
+        throw new Error("Product Name is missing");
+    }
+
+    const exisiting = await Product.findOne({
+        name: new RegExp(`^${name.trim().toLowerCase()}$`, "i"),
+    });
+    if (exisiting) {
+        throw new Error("Product Name already exists");
+    }
+
+    if (!description) {
+        throw new Error("Product Description is missing");
+    }
+
+    if (price == null || isNaN(price) || price < 0) {
+        throw new Error("Product price is invalid");
+    }
+
+    if (
+        stock == null ||
+        isNaN(stock) ||
+        !Number.isInteger(stock) ||
+        stock < 0
+    ) {
+        throw new Error("Product stock is invalid");
+    }
+
+    if (!category) {
+        throw new Error("Product category is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(category)) {
+        throw new Error("Category Id is invalid");
+    }
+
+    const categoryExists = await findCategoryById({ id: category });
+    if (!categoryExists) {
+        throw new Error("Category Id doesn't exist");
+    }
+
+    const update = {
+        _id: id,
+        name: name.trim().toLowerCase(),
+        description: description.trim(),
+        price: price,
+        stock: stock,
+        category: category,
+    };
+
+    return await Product.findOneAndUpdate({ _id: id }, update, { new: true });
+};
+
+/**
+ * @function removeProductById
+ * @description Service function to delete a product by its ID.
+ *              Validates ID and ensures the product exists before deletion.
+ *
+ * @param {Object} param0 - Request parameter object.
+ * @param {string} param0.id - The ID of the product to be deleted.
+ *
+ * @throws {Error} If the ID is missing, invalid, or the product doesn't exist.
+ * @returns {Promise<Object>} The deleted product document.
+ */
+export const removeProductById = async ({ id }) => {
+    if (!id) {
+        throw new Error("Product Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product Id is invalid");
+    }
+
+    const existingProduct = await findProductById({ id });
+    if (!existingProduct) {
+        throw new Error("Product Id doesn't exist");
+    }
+
+    return await Product.findOneAndDelete({ _id: id });
+};

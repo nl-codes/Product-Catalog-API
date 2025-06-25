@@ -12,7 +12,7 @@ import {
  * @description Controller to retrieve all categories from the database.
  *              Responds with a list of all available categories in JSON format.
  *              Calls the service layer's `listAllCategory` function.
- * @route GET /api/categories
+ * @route GET /api/category
  */
 export const getAllCategories = async (req, res) => {
     try {
@@ -29,7 +29,7 @@ export const getAllCategories = async (req, res) => {
  * @description Controller to retrieve categories from the database based on given category id.
  *              Responds with a details of the category found in JSON format.
  *              Calls the service layer's `findCategoryById` function.
- * @route GET /api/categories/:id
+ * @route GET /api/category/:id
  */
 export const getCategoryById = async (req, res) => {
     try {
@@ -49,7 +49,7 @@ export const getCategoryById = async (req, res) => {
  * @description Controller to add a new category to the database.
  *              Accepts category data from the request body and delegates creation to `createCategory`.
  *              Handles duplicate category errors and responds accordingly.
- * @route POST /api/categories
+ * @route POST /api/category
  */
 export const addCategory = async (req, res) => {
     try {
@@ -68,7 +68,7 @@ export const addCategory = async (req, res) => {
  *              Expects `id` in the request parameters and updated data in the request body.
  *              Delegates the update operation to `changeCategoryById`.
  *              Returns the updated category or an appropriate error if not found.
- * @route PUT /api/categories/:id
+ * @route PUT /api/category/:id
  */
 export const updateCategoryById = async (req, res) => {
     try {
@@ -86,7 +86,7 @@ export const updateCategoryById = async (req, res) => {
  * @description Controller to delete a category by its ID.
  *              Expects `id` in the request parameters and delegates deletion to `removeCategoryById`.
  *              Responds with a success message or an error if the category doesn't exist.
- * @route DELETE /api/categories/:id
+ * @route DELETE /api/category/:id
  */
 export const deleteCategoryById = async (req, res) => {
     try {
