@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Product } from "../models/models.js";
-import { findCategoryById } from "./categoryService.js";
+import { findCategoryById, findCategoryByName } from "./categoryService.js";
 
 /**
  * @function createProduct
@@ -246,8 +246,24 @@ export const selectProductByCategoryId = async ({ id }) => {
         throw new Error("Category Id doesn't exist");
     }
 
-    return await Product.find({ category: { _id: id } }).populate(
+    return await Product.find({ category: id }).populate(
         "category",
         "_id name description"
+    );
+};
+
+export const selectProductByCategoryName = async ({ name }) => {
+    if (!name || name.trim() === "") {
+        throw new Error("Category Name is missing");
+    }
+
+    const categoryExists = await findCategoryByName({ name });
+    if (!categoryExists) {
+        throw new Error("Category doesn't exist");
+    }
+
+    const product = await Product.find().populate("category");
+    return product.filter(
+        (p) => p.category?.name === name.trim().toLowerCase()
     );
 };
