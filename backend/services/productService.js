@@ -207,3 +207,18 @@ export const changeProductById = async (
 
     return await Product.findOneAndUpdate({ _id: id }, update, { new: true });
 };
+
+export const removeProductById = async ({ id }) => {
+    if (!id) {
+        throw new Error("Product Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product Id is invalid");
+    }
+
+    const existingProduct = await findProductById({ id });
+    if (!existingProduct) {
+        throw new Error("Product Id doesn't exist");
+    }
+
+    return await Product.findOneAndDelete({ _id: id });
+};

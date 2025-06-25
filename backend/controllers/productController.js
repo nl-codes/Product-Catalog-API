@@ -4,6 +4,7 @@ import {
     createProduct,
     findProductById,
     listAllProducts,
+    removeProductById,
 } from "../services/productService.js";
 
 /**
@@ -117,6 +118,19 @@ export const updateProductById = async (req, res) => {
         ) {
             status = 422;
         }
+        return res.status(status).json({ error: err.message });
+    }
+};
+
+export const deleteProductById = async (req, res) => {
+    try {
+        await removeProductById(req.params);
+        return res.status(200).json({
+            message: `Product of id ${req.params.id} has been deleted.`,
+        });
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Product doesn't exist" ? 404 : 400;
         return res.status(status).json({ error: err.message });
     }
 };
