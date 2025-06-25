@@ -5,6 +5,8 @@ import {
     findProductById,
     listAllProducts,
     removeProductById,
+    selectProductByCategoryId,
+    selectProductByCategoryName,
 } from "../services/productService.js";
 
 /**
@@ -138,6 +140,42 @@ export const deleteProductById = async (req, res) => {
     } catch (err) {
         console.error("❌ Error:", err.message);
         const status = err.message === "Product doesn't exist" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
+
+/**
+ * @function filterProductByCategoryId
+ * @description Controller to filter products using the category Id.
+ *              Expects `id` in the request parameters and delegates filtration to `selectProductByCategoryId`.
+ *              Responds with a success message or an error if the product doesn't exist.
+ * @route GET /api/product/filter-by/category/id/:id
+ */
+export const filterProductByCategoryId = async (req, res) => {
+    try {
+        const filteredProducts = await selectProductByCategoryId(req.params);
+        return res.status(200).json(filteredProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Category doesn't exist" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
+
+/**
+ * @function filterProductByCategoryName
+ * @description Controller to filter products using the category Name.
+ *              Expects `name` in the request parameters and delegates filtration to `selectProductByCategoryName`.
+ *              Responds with a success message or an error if the product doesn't exist.
+ * @route GET /api/product/filter-by/category/name/:name
+ */
+export const filterProductByCategoryName = async (req, res) => {
+    try {
+        const filteredProducts = await selectProductByCategoryName(req.params);
+        return res.status(200).json(filteredProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        const status = err.message === "Category doesn't exist" ? 404 : 400;
         return res.status(status).json({ error: err.message });
     }
 };

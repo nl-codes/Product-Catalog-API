@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Product } from "../models/models.js";
-import { findCategoryById } from "./categoryService.js";
+import { findCategoryById, findCategoryByName } from "./categoryService.js";
 
 /**
  * @function createProduct
@@ -232,4 +232,70 @@ export const removeProductById = async ({ id }) => {
     }
 
     return await Product.findOneAndDelete({ _id: id });
+};
+
+/**
+ * @function selectProductByCategoryId
+ * @description Service function retrieve all products that belong
+ *              to a given category by its category Id
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.id - The ObjectId of the category.
+ *
+ * @throws Will throw an error if:
+ * - The category ID is missing.
+ * - The category ID is invalid.
+ * - No category exists with the given ID.
+ *
+ * @returns {Promise<Array>} A list of products with the given category ID,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
+export const selectProductByCategoryId = async ({ id }) => {
+    if (!id) {
+        throw new Error("Category Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Category Id is invalid");
+    }
+
+    const categoryExists = await findCategoryById({ id });
+    if (!categoryExists) {
+        throw new Error("Category Id doesn't exist");
+    }
+
+    return await Product.find({ category: id }).populate(
+        "category",
+        "_id name description"
+    );
+};
+
+/**
+ * @function selectProductByCategoryName
+ * @description Service function retrieve all products that belong
+ *              to a given category by its category name
+ *
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.name - The name of the category (case-insensitive).
+ *
+ * @throws Will throw an error if:
+ * - The category name is missing or empty.
+ * - No category exists with the given name.
+ *
+ * @returns {Promise<Array>} A filtered list of products whose category name matches the given name,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
+export const selectProductByCategoryName = async ({ name }) => {
+    if (!name || name.trim() === "") {
+        throw new Error("Category Name is missing");
+    }
+
+    const categoryExists = await findCategoryByName({ name });
+    if (!categoryExists) {
+        throw new Error("Category doesn't exist");
+    }
+
+    const product = await Product.find().populate("category");
+    return product.filter(
+        (p) => p.category?.name === name.trim().toLowerCase()
+    );
 };
