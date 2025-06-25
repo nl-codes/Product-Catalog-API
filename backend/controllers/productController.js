@@ -1,5 +1,6 @@
 // Import service-level functions for handling category data operations
 import {
+    changeProductById,
     createProduct,
     findProductById,
     listAllProducts,
@@ -73,6 +74,39 @@ export const getProductById = async (req, res) => {
     } catch (err) {
         console.error("❌ Error:", err.message);
         const status = err.message === "Product id is required" ? 404 : 400;
+        return res.status(status).json({ error: err.message });
+    }
+};
+
+export const updateProductById = async (req, res) => {
+    try {
+        const editedProduct = await changeProductById(req.params, req.body);
+        res.status(200).json(editedProduct);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+
+        let status = 400;
+        if (
+            err.message === "Product Id doesn't exist" ||
+            err.message === "Category Id doesn't exist"
+        ) {
+            status = 404;
+        } else if (err.message === "Product Name already exists") {
+            status = 409;
+        } else if (
+            [
+                "Product Id is missing",
+                "Product Id is invalid",
+                "Product Name is missing",
+                "Product Description is missing",
+                "Product price is invalid",
+                "Product stock is invalid",
+                "Product category is missing",
+                "Category Id is invalid",
+            ].includes(err.message)
+        ) {
+            status = 422;
+        }
         return res.status(status).json({ error: err.message });
     }
 };

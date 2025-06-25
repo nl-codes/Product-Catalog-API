@@ -113,3 +113,69 @@ export const findProductById = async ({ id }) => {
 
     return exisitingProduct;
 };
+
+export const changeProductById = async (
+    { id },
+    { name, description, price, stock, category }
+) => {
+    if (!id) {
+        throw new Error("Product Id is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error("Product Id is invalid");
+    }
+
+    const existingProduct = await findProductById({ id });
+    if (!existingProduct) {
+        throw new Error("Product Id doesn't exist");
+    }
+
+    if (!name || name.trim() === "") {
+        throw new Error("Product Name is missing");
+    }
+
+    const exisiting = await Product.findOne({
+        name: new RegExp(`^${name.trim().toLowerCase()}$`, "i"),
+    });
+    if (exisiting) {
+        throw new Error("Product Name already exists");
+    }
+
+    if (!description) {
+        throw new Error("Product Description is missing");
+    }
+
+    if (price == null || isNaN(price) || price < 0) {
+        throw new Error("Product price is invalid");
+    }
+
+    if (
+        stock == null ||
+        isNaN(stock) ||
+        !Number.isInteger(stock) ||
+        stock < 0
+    ) {
+        throw new Error("Product stock is invalid");
+    }
+
+    if (!category) {
+        throw new Error("Product category is missing");
+    } else if (!mongoose.Types.ObjectId.isValid(category)) {
+        throw new Error("Category Id is invalid");
+    }
+
+    const categoryExists = await findCategoryById({ id: category });
+    if (!categoryExists) {
+        throw new Error("Category Id doesn't exist");
+    }
+
+    const update = {
+        _id: id,
+        name: name.trim().toLowerCase(),
+        description: description.trim(),
+        price: price,
+        stock: stock,
+        category: category,
+    };
+
+    return await Product.findOneAndUpdate({ _id: id }, update, { new: true });
+};
