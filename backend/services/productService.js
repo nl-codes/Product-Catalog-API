@@ -300,7 +300,28 @@ export const selectProductByCategoryName = async ({ name }) => {
     );
 };
 
+/**
+ * @function selectProductByPriceRange
+ * @description Service function retrieve all products of
+ *              certain price range
+ *
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.minimum - The minimum of the price
+ * @param {string} params.maximum - The maximum of the price
+ *
+ * @throws Will throw an error if:
+ * - The category name is missing or empty.
+ * - No category exists with the given name.
+ *
+ * @returns {Promise<Array>} A filtered list of products whose category name matches the given name,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
 export const selectProductByPriceRange = async ({ minimum, maximum }) => {
+    if (minimum == null || maximum == null) {
+        throw new Error("Minimum or Maximum is missing");
+    }
+
     const min = Number(minimum);
     const max = Number(maximum);
 
