@@ -181,6 +181,15 @@ export const filterProductByCategoryName = async (req, res) => {
     }
 };
 
+/**
+ * @function filterProductByPriceRange
+ * @description Controller to filter products based on a price range.
+ *              Expects `minimum` and `maximum` values as query parameters,
+ *              and delegates the filtering logic to the `selectProductByPriceRange` service.
+ *              Responds with filtered products or an error if the parameters are missing or invalid.
+ *
+ * @route GET /api/product/filter-by/price?minimum=VALUE&maximum=VALUE
+ */
 export const filterProductByPriceRange = async (req, res) => {
     try {
         const filteredProducts = await selectProductByPriceRange(req.query);
