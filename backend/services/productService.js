@@ -340,3 +340,16 @@ export const selectProductByPriceRange = async ({ minimum, maximum }) => {
         .populate("category", "_id name description")
         .lean();
 };
+
+export const findProductByName = async ({ searchTerm }) => {
+    if (!searchTerm || searchTerm.trim() === "") {
+        throw new Error("Product SearchTerm is missing");
+    }
+
+    const regex = new RegExp(searchTerm.trim(), "i");
+
+    return await Product.find({ name: regex }).populate(
+        "category",
+        "_id name description"
+    );
+};

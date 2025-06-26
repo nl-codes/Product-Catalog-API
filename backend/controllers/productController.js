@@ -3,6 +3,7 @@ import {
     changeProductById,
     createProduct,
     findProductById,
+    findProductByName,
     listAllProducts,
     removeProductById,
     selectProductByCategoryId,
@@ -194,6 +195,16 @@ export const filterProductByPriceRange = async (req, res) => {
     try {
         const filteredProducts = await selectProductByPriceRange(req.query);
         return res.status(200).json(filteredProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        return res.status(400).json({ error: err.message });
+    }
+};
+
+export const searchProductByName = async (req, res) => {
+    try {
+        const foundProducts = await findProductByName(req.params);
+        return res.status(200).json(foundProducts);
     } catch (err) {
         console.error("❌ Error:", err.message);
         return res.status(400).json({ error: err.message });
