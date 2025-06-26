@@ -7,6 +7,7 @@ import {
     removeProductById,
     selectProductByCategoryId,
     selectProductByCategoryName,
+    selectProductByPriceRange,
 } from "../services/productService.js";
 
 /**
@@ -177,5 +178,15 @@ export const filterProductByCategoryName = async (req, res) => {
         console.error("❌ Error:", err.message);
         const status = err.message === "Category doesn't exist" ? 404 : 400;
         return res.status(status).json({ error: err.message });
+    }
+};
+
+export const filterProductByPriceRange = async (req, res) => {
+    try {
+        const filteredProducts = await selectProductByPriceRange(req.query);
+        return res.status(200).json(filteredProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        return res.status(400).json({ error: err.message });
     }
 };

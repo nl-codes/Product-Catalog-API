@@ -4,6 +4,7 @@ import {
     deleteProductById,
     filterProductByCategoryId,
     filterProductByCategoryName,
+    filterProductByPriceRange,
     getAllProducts,
     getProductById,
     updateProductById,
@@ -18,5 +19,6 @@ router.put("/:id", updateProductById);
 router.delete("/:id", deleteProductById);
 router.get("/filter-by/category/id/:id", filterProductByCategoryId);
 router.get("/filter-by/category/name/:name", filterProductByCategoryName);
+router.get("/filter-by/price", filterProductByPriceRange);
 
 export default router;

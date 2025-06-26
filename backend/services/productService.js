@@ -299,3 +299,23 @@ export const selectProductByCategoryName = async ({ name }) => {
         (p) => p.category?.name === name.trim().toLowerCase()
     );
 };
+
+export const selectProductByPriceRange = async ({ minimum, maximum }) => {
+    const min = Number(minimum);
+    const max = Number(maximum);
+
+    if (!Number.isFinite(min) || !Number.isFinite(max)) {
+        throw new Error("Minimum or Maximum Price is invalid");
+    }
+
+    if (min < 0 || max < 0 || min > max) {
+        throw new Error(
+            "Invalid range: Minimum and Maximum must be >= 0 and Minimum <= Maximum"
+        );
+    }
+
+    return Product.find({ price: { $gte: min, $lte: max } })
+        .sort({ price: 1 })
+        .populate("category", "_id name description")
+        .lean();
+};
