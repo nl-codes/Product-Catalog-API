@@ -341,6 +341,21 @@ export const selectProductByPriceRange = async ({ minimum, maximum }) => {
         .lean();
 };
 
+/**
+ * @function findProductByName
+ * @description Searches for products whose names match the given search term.
+ *              The search is case-insensitive and supports partial matches using regular expressions.
+ *              It also populates the associated category information in the response.
+ *
+ * @param {Object} params - The parameters object.
+ * @param {string} params.searchTerm - The term to search for in product names.
+ *
+ * @throws {Error} Will throw an error if the search term is missing or empty.
+ *
+ * @returns {Promise<Array>} An array of product documents that match the search term,
+ *                           each with its `category` field populated (`_id`, `name`, `description`).
+ *
+ */
 export const findProductByName = async ({ searchTerm }) => {
     if (!searchTerm || searchTerm.trim() === "") {
         throw new Error("Product SearchTerm is missing");

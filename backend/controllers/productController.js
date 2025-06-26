@@ -201,6 +201,15 @@ export const filterProductByPriceRange = async (req, res) => {
     }
 };
 
+/**
+ * @function searchProductByName
+ * @description Express controller to search for products by name.
+ *              Expects a `searchTerm` parameter in the URL path (`req.params`),
+ *              and uses the `findProductByName` service to fetch matching products.
+ *              Responds with a list of matching products or an error message.
+ *
+ * @route GET /api/product//search-by/name/:searchTerm
+ */
 export const searchProductByName = async (req, res) => {
     try {
         const foundProducts = await findProductByName(req.params);
