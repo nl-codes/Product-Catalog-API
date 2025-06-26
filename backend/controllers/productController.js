@@ -3,10 +3,12 @@ import {
     changeProductById,
     createProduct,
     findProductById,
+    findProductByName,
     listAllProducts,
     removeProductById,
     selectProductByCategoryId,
     selectProductByCategoryName,
+    selectProductByPriceRange,
 } from "../services/productService.js";
 
 /**
@@ -177,5 +179,43 @@ export const filterProductByCategoryName = async (req, res) => {
         console.error("❌ Error:", err.message);
         const status = err.message === "Category doesn't exist" ? 404 : 400;
         return res.status(status).json({ error: err.message });
+    }
+};
+
+/**
+ * @function filterProductByPriceRange
+ * @description Controller to filter products based on a price range.
+ *              Expects `minimum` and `maximum` values as query parameters,
+ *              and delegates the filtering logic to the `selectProductByPriceRange` service.
+ *              Responds with filtered products or an error if the parameters are missing or invalid.
+ *
+ * @route GET /api/product/filter-by/price?minimum=VALUE&maximum=VALUE
+ */
+export const filterProductByPriceRange = async (req, res) => {
+    try {
+        const filteredProducts = await selectProductByPriceRange(req.query);
+        return res.status(200).json(filteredProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        return res.status(400).json({ error: err.message });
+    }
+};
+
+/**
+ * @function searchProductByName
+ * @description Express controller to search for products by name.
+ *              Expects a `searchTerm` parameter in the URL path (`req.params`),
+ *              and uses the `findProductByName` service to fetch matching products.
+ *              Responds with a list of matching products or an error message.
+ *
+ * @route GET /api/product//search-by/name/:searchTerm
+ */
+export const searchProductByName = async (req, res) => {
+    try {
+        const foundProducts = await findProductByName(req.params);
+        return res.status(200).json(foundProducts);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+        return res.status(400).json({ error: err.message });
     }
 };

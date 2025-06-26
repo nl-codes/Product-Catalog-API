@@ -4,8 +4,10 @@ import {
     deleteProductById,
     filterProductByCategoryId,
     filterProductByCategoryName,
+    filterProductByPriceRange,
     getAllProducts,
     getProductById,
+    searchProductByName,
     updateProductById,
 } from "../controllers/productController.js";
 
@@ -18,5 +20,7 @@ router.put("/:id", updateProductById);
 router.delete("/:id", deleteProductById);
 router.get("/filter-by/category/id/:id", filterProductByCategoryId);
 router.get("/filter-by/category/name/:name", filterProductByCategoryName);
+router.get("/filter-by/price", filterProductByPriceRange);
+router.get("/search-by/name/:searchTerm", searchProductByName);
 
 export default router;

@@ -299,3 +299,72 @@ export const selectProductByCategoryName = async ({ name }) => {
         (p) => p.category?.name === name.trim().toLowerCase()
     );
 };
+
+/**
+ * @function selectProductByPriceRange
+ * @description Service function retrieve all products of
+ *              certain price range
+ *
+ * @param {Object} params - The parameter object.
+ * @param {string} params.minimum - The minimum of the price
+ * @param {string} params.maximum - The maximum of the price
+ *
+ * @throws Will throw an error if:
+ * - The minimum or maximum is missing.
+ * - The minimum or maximum is less than 0.
+ * - The minimum is greater than maximum.
+ *
+ * @returns {Promise<Array>} A filtered list of products whose price is in the given range,
+ * each populated with `_id`, `name`, and `description` fields of the category.
+ */
+export const selectProductByPriceRange = async ({ minimum, maximum }) => {
+    if (minimum == null || maximum == null) {
+        throw new Error("Minimum or Maximum is missing");
+    }
+
+    const min = Number(minimum);
+    const max = Number(maximum);
+
+    if (!Number.isFinite(min) || !Number.isFinite(max)) {
+        throw new Error("Minimum or Maximum Price is invalid");
+    }
+
+    if (min < 0 || max < 0 || min > max) {
+        throw new Error(
+            "Invalid range: Minimum and Maximum must be >= 0 and Minimum <= Maximum"
+        );
+    }
+
+    return Product.find({ price: { $gte: min, $lte: max } })
+        .sort({ price: 1 })
+        .populate("category", "_id name description")
+        .lean();
+};
+
+/**
+ * @function findProductByName
+ * @description Searches for products whose names match the given search term.
+ *              The search is case-insensitive and supports partial matches using regular expressions.
+ *              It also populates the associated category information in the response.
+ *
+ * @param {Object} params - The parameters object.
+ * @param {string} params.searchTerm - The term to search for in product names.
+ *
+ * @throws {Error} Will throw an error if the search term is missing or empty.
+ *
+ * @returns {Promise<Array>} An array of product documents that match the search term,
+ *                           each with its `category` field populated (`_id`, `name`, `description`).
+ *
+ */
+export const findProductByName = async ({ searchTerm }) => {
+    if (!searchTerm || searchTerm.trim() === "") {
+        throw new Error("Product SearchTerm is missing");
+    }
+
+    const regex = new RegExp(searchTerm.trim(), "i");
+
+    return await Product.find({ name: regex }).populate(
+        "category",
+        "_id name description"
+    );
+};
