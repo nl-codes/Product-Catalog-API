@@ -25,6 +25,7 @@ const productSchema = new Schema(
 const userSchema = new Schema({
     username: { type: String, required: true, trim: true },
     password: { type: String, required: true },
+    role: { type: String, required: true },
 });
 
 // Export Category and Product Models
