@@ -21,6 +21,13 @@ const productSchema = new Schema(
     { timestamps: true }
 );
 
+// Users Schema
+const userSchema = new Schema({
+    username: { type: String, required: true, trim: true },
+    password: { type: String, required: true },
+});
+
 // Export Category and Product Models
 export const Category = model("Category", categorySchema);
 export const Product = model("Product", productSchema);
+export const User = model("User", userSchema);
