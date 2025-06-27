@@ -18,3 +18,24 @@ export const addUsers = async ({ username, password }) => {
 
     return await newUser.save();
 };
+
+export const verifyUser = async ({ username, password }) => {
+    if (!username || !password) {
+        throw new Error("Username and Password required.");
+    }
+    const existingUser = await User.findOne({ username: username });
+
+    if (!existingUser) {
+        throw new Error("Invalid email or password");
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+    );
+
+    if (!isPasswordCorrect) {
+        throw new Error("Invalid email or password");
+    }
+    return existingUser;
+};
