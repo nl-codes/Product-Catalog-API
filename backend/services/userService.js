@@ -27,14 +27,14 @@ export const addUsers = async ({ username, password, role }) => {
     return await newUser.save();
 };
 
-export const verifyUser = async ({ username, password }) => {
-    if (!username || !password) {
-        throw new Error("Username and Password required.");
+export const verifyUser = async ({ username, password, role }) => {
+    if (!username || !password || !role) {
+        throw new Error("Username, Password and role required.");
     }
-    const existingUser = await User.findOne({ username: username });
+    const existingUser = await User.findOne({ username: username, role: role });
 
     if (!existingUser) {
-        throw new Error("Invalid email or password");
+        throw new Error("Invalid username or password");
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -43,7 +43,7 @@ export const verifyUser = async ({ username, password }) => {
     );
 
     if (!isPasswordCorrect) {
-        throw new Error("Invalid email or password");
+        throw new Error("Invalid username or password");
     }
     return existingUser;
 };
