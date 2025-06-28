@@ -2,6 +2,34 @@
 import { generateToken } from "../utils/generateToken.js";
 import { addUsers, verifyUser } from "../services/userService.js";
 
+/**
+ * @function registerUser
+ * @description Controller for handling user registration (admin or user).
+ *              Calls the `addUsers` service to create a new user, generates a JWT token,
+ *              and responds with a success message and token if registration succeeds.
+ *
+ * @throws {Error} Returns appropriate HTTP status codes:
+ * - 404 if username or password is missing
+ * - 400 for other input or server-side errors
+ *
+ * @returns {Object} JSON response with a success message and JWT token.
+ *
+ * @example Request
+ * {
+ *   "username": "john_doe",
+ *   "password": "securePass123",
+ *   "role": "user"
+ * }
+ *
+ * @example Response
+ * {
+ *   "message": "Registration Successfull",
+ *   "token": "<JWT_TOKEN>"
+ * }
+ *
+ * @note Middleware like `attachRole("user")` or `attachRole("admin")` should be used beforehand
+ *       to ensure the `role` field is present in `req.body`.
+ */
 export const registerUser = async (req, res) => {
     try {
         const registeredUser = await addUsers(req.body);
