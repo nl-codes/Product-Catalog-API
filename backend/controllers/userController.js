@@ -18,7 +18,7 @@ import { addUsers, verifyUser } from "../services/userService.js";
  * {
  *   "username": "john_doe",
  *   "password": "securePass123",
- *   "role": "user"
+ *   "role": "user" | "admin"
  * }
  *
  * @example Response
@@ -27,8 +27,6 @@ import { addUsers, verifyUser } from "../services/userService.js";
  *   "token": "<JWT_TOKEN>"
  * }
  *
- * @note Middleware like `attachRole("user")` or `attachRole("admin")` should be used beforehand
- *       to ensure the `role` field is present in `req.body`.
  */
 export const registerUser = async (req, res) => {
     try {
@@ -48,6 +46,32 @@ export const registerUser = async (req, res) => {
     }
 };
 
+/**
+ * @function loginUser
+ * @description Authenticates a user (admin or user) using credentials provided in the request body.
+ *              Calls `verifyUser` service to validate username, password, and role.
+ *              If authentication is successful, returns a JWT token.
+ *
+ * @throws {Error} Returns HTTP 400 with error message for invalid credentials or other failures.
+ *
+ * @returns {Object} JSON response containing a success message and JWT token.
+ *
+ * @example Request
+ * {
+ *   "username": "admin123",
+ *   "password": "securePass!",
+ *   "role": "admin"
+ * }
+ *
+ * @example Response
+ * {
+ *   "message": "Login Successful",
+ *   "token": "<JWT_TOKEN>"
+ * }
+ *
+ * @note The route should use middleware like `attachRole("admin")` or `attachRole("user")`
+ *       to ensure the correct `role` is included in `req.body` before this controller runs.
+ */
 export const loginUser = async (req, res) => {
     try {
         const loginUser = await verifyUser(req.body);
