@@ -45,6 +45,23 @@ export const addUsers = async ({ username, password, role }) => {
     return await newUser.save();
 };
 
+/**
+ * @function verifyUser
+ * @description Authenticates a user by verifying their username, password, and role.
+ *              Checks whether the user exists in the database with the provided role,
+ *              and validates the password using bcrypt.
+ *
+ * @param {Object} param - Object containing login credentials.
+ * @param {string} param.username - The username of the user (required).
+ * @param {string} param.password - The plain-text password to verify (required).
+ * @param {string} param.role - The role of the user, must be either "admin" or "user" (required).
+ *
+ * @throws {Error} If any required field is missing.
+ * @throws {Error} If the user is not found or password is incorrect.
+ *
+ * @returns {Promise<Object>} The authenticated user document (with role matched).
+ *
+ */
 export const verifyUser = async ({ username, password, role }) => {
     if (!username || !password || !role) {
         throw new Error("Username, Password and role required.");
