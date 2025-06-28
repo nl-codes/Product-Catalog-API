@@ -21,6 +21,29 @@ const productSchema = new Schema(
     { timestamps: true }
 );
 
+// Users Schema
+const userSchema = new Schema({
+    username: { type: String, required: true, trim: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ["admin", "user"], required: true },
+});
+
+userSchema.set("toJSON", {
+    transform: function (doc, ret, options) {
+        delete ret.password;
+        delete ret.__v;
+        return ret;
+    },
+});
+userSchema.set("toJSON", {
+    transform: function (doc, ret, options) {
+        delete ret.password;
+        delete ret.__v;
+        return ret;
+    },
+});
+
 // Export Category and Product Models
 export const Category = model("Category", categorySchema);
 export const Product = model("Product", productSchema);
+export const User = model("User", userSchema);

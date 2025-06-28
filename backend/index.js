@@ -1,7 +1,11 @@
 import express from "express";
 import connectDB from "./database/connection.js";
+import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -14,5 +18,6 @@ app.listen(PORT, () => {
 
 connectDB();
 
+app.use("/users", userRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);

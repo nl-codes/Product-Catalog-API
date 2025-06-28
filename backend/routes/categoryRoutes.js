@@ -7,14 +7,16 @@ import {
     getCategoryByName,
     updateCategoryById,
 } from "../controllers/categoryControllers.js";
+import { verifyToken } from "../middleware/verifyToken.js";
+import { verifyRole } from "../middleware/verifyRole.js";
 
 const router = express.Router();
 
-router.get("/", getAllCategories);
-router.get("/:id", getCategoryById);
-router.get("/name/:name", getCategoryByName);
-router.post("/", addCategory);
-router.put("/:id", updateCategoryById);
-router.delete("/:id", deleteCategoryById);
+router.get("/", verifyToken, getAllCategories);
+router.get("/:id", verifyToken, getCategoryById);
+router.get("/name/:name", verifyToken, getCategoryByName);
+router.post("/", verifyToken, verifyRole("admin"), addCategory);
+router.put("/:id", verifyToken, verifyRole("admin"), updateCategoryById);
+router.delete("/:id", verifyToken, verifyRole("admin"), deleteCategoryById);
 
 export default router;
