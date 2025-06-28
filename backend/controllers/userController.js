@@ -1,5 +1,5 @@
 // Import service-level functions for handling category data operations
-import { generateToken } from "../middleware/generateToken.js";
+import { generateToken } from "../utils/generateToken.js";
 import { addUsers, verifyUser } from "../services/userService.js";
 
 export const registerUser = async (req, res) => {
