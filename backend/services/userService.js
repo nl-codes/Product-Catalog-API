@@ -1,11 +1,15 @@
 import { User } from "../models/models.js";
 import bcrypt from "bcrypt";
 
-export const addUsers = async ({ username, password }) => {
-    if (!username || !password) {
-        throw new Error("Username and Password required.");
+export const addUsers = async ({ username, password, role }) => {
+    if (!username || !password || !role) {
+        throw new Error("Username, Password and Role are required.");
     }
-    const existingUser = await User.findOne({ username: username });
+
+    if (!["admin", "user"].includes(role)) {
+        throw new Error("Invalid role. Please choose admin | user");
+    }
+    const existingUser = await User.findOne({ username: username, role: role });
 
     if (existingUser) {
         throw new Error("User already exists");
@@ -14,7 +18,11 @@ export const addUsers = async ({ username, password }) => {
     const randomSalt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, randomSalt);
 
-    const newUser = new User({ username: username, password: hashedPassword });
+    const newUser = new User({
+        username: username,
+        password: hashedPassword,
+        role: role,
+    });
 
     return await newUser.save();
 };
